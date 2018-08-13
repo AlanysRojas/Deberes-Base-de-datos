@@ -1,0 +1,45 @@
+CREATE DATABASE MultiUsuario;
+USE MultiUsuario;
+
+CREATE TABLE Usuarios(
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+nombre VARCHAR (50),
+apellido VARCHAR (50),
+direccion VARCHAR(100),
+email VARCHAR(50),
+telefono VARCHAR(50),
+version INT
+);
+DELIMITER $$
+CREATE PROCEDURE ingUsuarios(
+nombre VARCHAR (50),
+apellido VARCHAR (50),
+direccion VARCHAR(100),
+email VARCHAR(50),
+telefono VARCHAR(50),
+OUT version INT
+)
+BEGIN 
+INSERT INTO Usuarios(nombre,apellido,direccion,email,telefono,version) VALUES (nombre,apellido,direccion,email,telefono,1);
+SELECT * FROM Usuarios;
+END;
+
+CREATE PROCEDURE updUsuarios(
+updId INT,
+nombre VARCHAR (50),
+apellido VARCHAR (50),
+direccion VARCHAR(100),
+email VARCHAR(50),
+telefono VARCHAR(50),
+OUT version INT
+)
+BEGIN 
+SET SQL_SAFE_UPDATES = 0;
+UPDATE Usuarios SET nombre=nombre, apellido=apellido,direccion=direccion,email=email,telefono=telefono,version=(SELECT Usuarios.version WHERE id=updId)+1;
+SELECT * FROM Usuarios WHERE id = updId;
+END;
+
+CALL ingUsuarios('Alanis','Rojaz','Mena 2','afv.rojas@yavirac.edu.ec','2624608',@out_value);
+SELECT * FROM Usuarios;
+CALL updUsuarios(1,'Alanis','Rojas','Mena 2','afv.rojas@yavirac.edu.ec','2624608',@out_value);
+CALL updUsuarios(1,'Alanys','Rojaz','Mena 2','afv.rojas@yavirac.edu.ec','2624608',@out_value);

@@ -1,0 +1,482 @@
+CREATE DATABASE CRUD;
+USE CRUD;
+
+/*Tabla Estudiantes*/
+CREATE TABLE Estudiantes(
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+nombre VARCHAR (100),
+apellido VARCHAR(100),
+direccion VARCHAR(500)
+
+);
+
+CREATE TABLE Cursos(
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+nivel VARCHAR (100),
+paralelo VARCHAR (50),
+idEstudiante INT,
+FOREIGN KEY(idEstudiante) REFERENCES Estudiantes(id)
+);
+
+CREATE TABLE Maestros(
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+nombre VARCHAR(50),
+apellido VARCHAR(50),
+telefono VARCHAR(15),
+direccion VARCHAR(500)
+
+);
+
+CREATE TABLE Jornadas(
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+detalle VARCHAR(200)
+
+);
+
+
+
+/* Tabla Artistas*/
+CREATE TABLE Artistas(
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+nombre VARCHAR(100),
+apellido VARCHAR(100),
+nombreArtistico VARCHAR(100),
+telefono VARCHAR(100) 
+);
+
+CREATE TABLE Instrumentos(
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+instrumento VARCHAR(100),
+marca VARCHAR(100),
+color VARCHAR(100),
+idArtista INT,
+FOREIGN KEY (idArtista) REFERENCES Artistas(id)
+);
+
+/* Tabla Zoologicos*/
+CREATE TABLE Zoologicos(
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+nombre VARCHAR(100),
+direccion VARCHAR(100),
+telefono VARCHAR(100)
+);
+
+CREATE TABLE Animales(
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+nombre VARCHAR(100),
+especie VARCHAR(100),
+idZoologico INT,
+FOREIGN KEY (idZoologico) REFERENCES Zoologicos(id)
+);
+
+
+/* Tabla Bibliotecas */
+CREATE TABLE Bibliotecas(
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+nombre VARCHAR(100),
+direccion VARCHAR(100),
+telefono VARCHAR(15)
+);
+
+CREATE TABLE Libros(
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+nombre VARCHAR(100),
+autor VARCHAR(100),
+editorial VARCHAR(100),
+genero VARCHAR(100),
+idBiblioteca INT,
+FOREIGN KEY (idBiblioteca) REFERENCES Bibliotecas(id)
+);
+
+/* Procedimiento almacenado de la tabla estudiantes */
+DELIMITER $$
+CREATE PROCEDURE ingEstudiantes (
+nombre VARCHAR(100),
+apellido VARCHAR(100),
+direccion VARCHAR(500),
+OUT ingId INT
+)
+BEGIN
+INSERT INTO Estudiantes (nombre,apellido,direccion) VALUES(nombre,apellido,direccion);
+SET ingId = last_insert_id();
+SELECT * FROM Estudiantes WHERE id = ingId;
+END;
+
+CREATE PROCEDURE reaEstudiantes(
+reaId INT
+)
+BEGIN
+SELECT * FROM Estudiantes WHERE id = reaId;
+END;
+
+CREATE PROCEDURE updEstudiantes(
+updId INT,
+nombre VARCHAR(100),
+apellido VARCHAR(100),
+direccion VARCHAR(500)
+)
+BEGIN
+SET SQL_SAFE_UPDATES = 0;
+UPDATE Estudiantes SET nombre=nombre, apellido=apellido,direccion=direccion WHERE id = updId;
+END;
+
+CREATE PROCEDURE delEstudiantes(
+delId INT
+)
+BEGIN
+DELETE FROM Estudiantes WHERE id = delId;
+END;
+
+/* Procedimiento almacenado de la tabla Cursos */
+CREATE PROCEDURE ingCursos(
+nivel VARCHAR(100),
+paralelo VARCHAR(50),
+idEstudiante INT,
+OUT ingId INT
+)
+BEGIN 
+INSERT INTO Cursos (nivel,paralelo,idEstudiante) VALUES (nivel,paralelo,idEstudiante);
+SET ingId = last_insert_id();
+SELECT * FROM Estudiantes WHERE id = ingId;
+END;
+
+CREATE PROCEDURE reaCursos(
+reaId INT
+)
+BEGIN
+SELECT * FROM Cursos WHERE id = reaId;
+END;
+
+CREATE PROCEDURE updCursos(
+updId INT,
+nivel VARCHAR(100),
+paralelo VARCHAR(50),
+idEstudiante INT
+)
+BEGIN
+SET SQL_SAFE_UPDATES = 0;
+UPDATE Cursos SET nivel=nivel, paralelo=paralelo,idEstudiante=idEstudiante WHERE id=updId;
+END;
+
+CREATE PROCEDURE delCursos(
+delId INT
+)
+BEGIN
+DELETE FROM Cursos WHERE id = delId;
+END;
+
+/* Procedimiento almacenado de la tabla maestros */
+CREATE PROCEDURE ingMaestros(
+nombre VARCHAR(50),
+apellido VARCHAR(50),
+telefono VARCHAR(15),
+direccion VARCHAR(500),
+OUT ingId INT
+)
+BEGIN 
+INSERT INTO Maestros (nombre,apellido,telefono,direccion) VALUES (nombre,apellido,telefono,direccion);
+SET ingId = last_insert_id();
+SELECT * FROM Estudiantes WHERE id = ingId;
+END;
+
+CREATE PROCEDURE reaMaestros(
+reaId INT
+)
+BEGIN
+SELECT * FROM Maestros WHERE id=reaId;
+END;
+
+CREATE PROCEDURE updMaestros(
+updId INT,
+nombre VARCHAR(50),
+apellido VARCHAR(50),
+telefono VARCHAR(15),
+direccion VARCHAR(500)
+)
+BEGIN
+SET SQL_SAFE_UPDATES = 0;
+UPDATE Maestros SET nombre=nombre, apellido=apellido,telefono=telefono,direccion=direccion WHERE id=updId;
+END;
+
+CREATE PROCEDURE delMaestros(
+delId INT
+)
+BEGIN
+DELETE FROM Maestros WHERE id = delId;
+END;
+
+/*Procedimiento almacenado de la tabla Jornadas*/
+CREATE PROCEDURE ingJornadas(
+detalle VARCHAR(200),
+
+OUT ingId INT
+)
+BEGIN 
+INSERT INTO Jornadas (detalle) VALUES (detalle);
+SET ingId = last_insert_id();
+SELECT * FROM Estudiantes WHERE id = ingId;
+END;
+
+CREATE PROCEDURE reaJornadas(
+reaId INT
+)
+BEGIN
+SELECT * FROM Jornadas WHERE id=reaId;
+END;
+
+CREATE PROCEDURE updJornadas(
+updId INT,
+detalle VARCHAR (200)
+)
+BEGIN
+SET SQL_SAFE_UPDATES = 0;
+UPDATE Jornadas SET detalle=detalle WHERE id=updId;
+END;
+
+CREATE PROCEDURE delJornadas(
+delId INT
+)
+BEGIN
+DELETE FROM Jornadas WHERE id = delId;
+END;
+
+/*Procedimiento almacenado para la tabla Artistas*/
+CREATE PROCEDURE ingArtistas(
+nombre VARCHAR(100),
+apellido VARCHAR(100),
+nombreArtistico VARCHAR(100),
+telefono VARCHAR(100),
+OUT ingId INT
+)
+BEGIN 
+INSERT INTO Artistas (nombre,apellido,nombreArtistico,telefono) VALUES (nombre,apellido,nombreArtistico,telefono);
+SET ingId = last_insert_id();
+SELECT * FROM Estudiantes WHERE id = ingId;
+END;
+
+CREATE PROCEDURE reaArtistas(
+reaId INT
+)
+BEGIN
+SELECT * FROM Artistas WHERE id=reaId ;
+END;
+
+CREATE PROCEDURE updArtistas(
+updId INT,
+nombre VARCHAR(100),
+apellido VARCHAR (100),
+nombreArtistico VARCHAR (100),
+telefono VARCHAR(100) 
+)
+BEGIN
+SET SQL_SAFE_UPDATES = 0;
+UPDATE Artistas SET nombre=nombre,apellido=apellido,nombreArtistico=nombreArtistico,telefono=telefono WHERE id=updId;
+END;
+
+CREATE PROCEDURE delArtistas(
+delId INT
+)
+BEGIN
+DELETE FROM Artistas WHERE id = delId ;
+END;
+
+
+/*Procedimiento almacenado de a tabla Instrumentos*/
+CREATE PROCEDURE ingInstrumentos(
+instrumento VARCHAR(100),
+marca VARCHAR(100),
+color VARCHAR(100),
+idArtista INT,
+OUT ingId INT
+)
+BEGIN 
+INSERT INTO Instrumentos (instrumento,marca,color,idArtista) VALUES (instrumento,marca,color,idArtista);
+SET ingId = last_insert_id();
+SELECT * FROM Estudiantes WHERE id = ingId;
+END;
+
+CREATE PROCEDURE reaInstrumentos(
+reaId INT
+)
+BEGIN
+SELECT * FROM Intrumentos WHERE id=reaId ;
+END;
+
+CREATE PROCEDURE updInstrumentos(
+updId INT,
+instrumento VARCHAR(100),
+marca VARCHAR(100),
+color VARCHAR(100),
+idArtista INT
+)
+BEGIN
+SET SQL_SAFE_UPDATES = 0;
+UPDATE Artistas SET instrumento=instrumento,marca=marca,color=color,idArtista=idArtista WHERE id=updId ;
+END;
+
+CREATE PROCEDURE delInstrumentos(
+delId INT
+)
+BEGIN
+DELETE FROM Instrumentos WHERE id = delId;
+END;
+
+
+/*Procedimiento almacenado de la tabla Zoologicos*/
+CREATE PROCEDURE ingZoologicos(
+nombre VARCHAR(100),
+direccion VARCHAR(100),
+telefono VARCHAR(100),
+OUT ingId INT
+)
+BEGIN 
+INSERT INTO Zoologicos (nombre,direccion,telefono) VALUES (nombre,direccion,telefono);
+SET ingId = last_insert_id();
+SELECT * FROM Estudiantes WHERE id = ingId;
+END;
+
+CREATE PROCEDURE reazoologicos(
+reaId INT
+)
+BEGIN
+SELECT * FROM Zoologicos WHERE id=reaId ;
+END;
+
+CREATE PROCEDURE updZoologicos(
+updId INT,
+nombre VARCHAR(100),
+direccion VARCHAR(100),
+telefono VARCHAR(100)
+)
+BEGIN
+SET SQL_SAFE_UPDATES = 0;
+UPDATE Zoologicos SET nombre=nombre,direccion=direccion,telefono=telefono WHERE id=updId ;
+END;
+
+CREATE PROCEDURE delZoologicos(
+delId INT
+)
+BEGIN
+DELETE FROM Zoologicos WHERE id = delId ;
+END;
+
+
+/*Procediemiento almacenado de la tabla Animales*/
+CREATE PROCEDURE ingAnimales(
+nombre VARCHAR(100),
+especie VARCHAR(100),
+idZoologico INT,
+OUT ingId INT
+)
+BEGIN 
+INSERT INTO Animales (nombre,especie,idZoologico) VALUES (nombre,especie,idZoologico);
+SET ingId = last_insert_id();
+SELECT * FROM Estudiantes WHERE id = ingId;
+END;
+
+CREATE PROCEDURE reaAnimales(
+reaId INT
+)
+BEGIN
+SELECT * FROM Animales WHERE id=reaId ;
+END;
+
+CREATE PROCEDURE updAnimales(
+updId INT,
+nombre VARCHAR(100),
+especie VARCHAR(100),
+idZoologico INT
+)
+BEGIN
+SET SQL_SAFE_UPDATES = 0;
+UPDATE Animales SET nombre=nombre,especie=especie, idZoologico=idZoologico WHERE id=updId ;
+END;
+
+CREATE PROCEDURE delAnimales(
+delId INT
+)
+BEGIN
+DELETE FROM Animales WHERE id = delId ;
+END;
+
+
+/*Procediemiento almacenado de la tabla Bibliotecas*/
+CREATE PROCEDURE ingBibliotecas(
+nombre VARCHAR(100),
+telefono VARCHAR(15),
+direccion VARCHAR(600),
+OUT ingId INT
+)
+BEGIN 
+INSERT INTO Bibliotecas (nombre,telefono,direccion) VALUES (nombrer,telefono,direccion);
+SET ingId = last_insert_id();
+SELECT * FROM Estudiantes WHERE id = ingId;
+END;
+
+CREATE PROCEDURE reaBibliotecas(
+reaId INT
+)
+BEGIN
+SELECT * FROM Bibliotecas WHERE id=reaId ;
+END;
+
+CREATE PROCEDURE updBibliotecas(
+updId INT,
+nombre VARCHAR(100),
+telefono VARCHAR(15),
+direccion VARCHAR(600)
+)
+BEGIN
+SET SQL_SAFE_UPDATES = 0;
+UPDATE Bibliotecas SET nombre=nombre,telefono=telefono,direccion=direccion WHERE id=updId;
+END;
+
+CREATE PROCEDURE delBibliotecas(
+delId INT
+)
+BEGIN
+DELETE FROM Bibliotecas WHERE id = delId ;
+END;
+
+
+/*Procedimiento almacenado de la tabla Libros*/
+CREATE PROCEDURE ingLibros(
+nombre VARCHAR(100),
+autor VARCHAR(100),
+editorial VARCHAR(100),
+genero VARCHAR(100),
+idBiblioteca INT,
+OUT ingId INT
+)
+BEGIN 
+INSERT INTO Libros (nombre,autor,editorial,genero,idBiblioteca) VALUES (nombre,autor,editorial,genero,idBiblioteca);
+SET ingId = last_insert_id();
+SELECT * FROM Estudiantes WHERE id = ingId;
+END;
+
+CREATE PROCEDURE reaLibros(
+reaId INT
+)
+BEGIN
+SELECT * FROM Libros WHERE id=reaId ;
+END;
+
+CREATE PROCEDURE updLibros(
+updId INT,
+nombre VARCHAR(100),
+autor VARCHAR(100),
+editorial VARCHAR(100),
+genero VARCHAR(100),
+idBiblioteca INT
+)
+BEGIN
+SET SQL_SAFE_UPDATES = 0;
+UPDATE Libros SET nombre=nombre,autor=autor,editorial=editorial,genero=genero,idBiblioteca=idBiblioteca WHERE id=updId ;
+END;
+
+CREATE PROCEDURE delLibros(
+delId INT
+)
+BEGIN
+DELETE FROM Libros WHERE id = delId ;
+END;

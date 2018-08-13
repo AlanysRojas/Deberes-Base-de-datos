@@ -1,0 +1,42 @@
+CREATE DATABASE Cursores;
+USE Cursores;
+
+CREATE TABLE Usuarios(
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+nombre VARCHAR (50),
+apellido VARCHAR (50),
+telefono VARCHAR(50),
+version INT
+);
+DELIMITER $$
+CREATE PROCEDURE ingUsuarios(
+nombre VARCHAR (50),
+aCREATE DATABASE Transacciones;
+USE Transacciones;
+
+/* Tabla Artistas*/
+CREATE TABLE Artistas(
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+nombre VARCHAR(100),
+apellido VARCHAR(100),
+nombreArtistico VARCHAR(100),
+telefono VARCHAR(100) 
+);
+
+CREATE TABLE Instrumentos(
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+instrumento VARCHAR(100),
+marca VARCHAR(100),
+color VARCHAR(100),
+idArtista INT,
+FOREIGN KEY (idArtista) REFERENCES Artistas(id)
+);
+
+START TRANSACTION;
+INSERT INTO Artistas(nombre,apellido,nombreArtistico,telefono) VALUES ('Oliver','Sykes','Oliver Sykes','2624608');
+SET idArtista = last_insert_id();
+SELECT * FROM Artistas;
+INSERT INTO Instrumentos(instrumento,marca,color,idArtista) VALUES ('Guitarra','Fender','Roja',idArtista);
+SELECT * FROM Instrumentos;
+ROLLBACK;
+COMMIT;
